@@ -2,6 +2,7 @@ import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import ReviewForm from './ReviewForm';
 import { Link } from 'react-router-dom';
+import { API_CONFIG } from '../../config/api';
 
 const Footer = () => {
   return (
@@ -38,7 +39,7 @@ const Footer = () => {
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Cars</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-              <li><a href="http://localhost:5174/admin/login" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">Admin Login</a></li>
+                              <li><a href={`${API_CONFIG.BASE_URL}/admin/login`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">Admin Login</a></li>
             </ul>
           </div>
 

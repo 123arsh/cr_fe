@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { API_CONFIG } from '../../config/api';
 
 const List = () => {
   const [list, setList] = useState([]);
@@ -17,7 +18,7 @@ const List = () => {
   const [acceptedBookings, setAcceptedBookings] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:7700/car/list')
+    fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CAR_LIST}`)
       .then((res) => res.json())
       .then((data) => {
         setList(data.carsData);
@@ -35,7 +36,7 @@ const List = () => {
 
   useEffect(() => {
     // Fetch accepted bookings
-    fetch('http://localhost:7700/detail/detail')
+    fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DETAIL_LIST}`)
       .then(res => res.json())
       .then(data => {
         const accepted = (data.detail || []).filter(d => d.verificationStatus === 'approved');
@@ -84,7 +85,7 @@ const List = () => {
         data.append(key, value);
       });
       data.append('carId', bookingCar._id);
-      const res = await fetch('http://localhost:7700/detail/send', {
+      const res = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DETAIL_SEND}`, {
         method: 'POST',
         body: data,
       });
@@ -195,7 +196,7 @@ const List = () => {
               <div className='relative w-full md:w-[400px] h-[300px] bg-white flex items-center justify-center group'>
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <img
-                  src={`http://localhost:7700${e.image}`}
+                  src={API_CONFIG.ENDPOINTS.CAR_IMAGE(e.image)}
                   alt={e.name}
                   className="w-full h-full object-contain p-4 transition-all duration-500 group-hover:scale-105 relative z-10"
                 />
@@ -354,7 +355,7 @@ const List = () => {
                 <div className='w-[50%] h-full flex flex-col gap-6'>
                   <div className='bg-white rounded-2xl p-6 h-[400px] flex items-center justify-center group relative overflow-hidden shadow-lg'>
                     <img
-                      src={`http://localhost:7700${visible.image}`}
+                      src={API_CONFIG.ENDPOINTS.CAR_IMAGE(visible.image)}
                       alt={visible.name}
                       className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
                     />

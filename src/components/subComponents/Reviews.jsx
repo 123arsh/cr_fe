@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
 import axios from 'axios';
 import Marquee from 'react-fast-marquee';
+import { API_CONFIG } from '../../config/api';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -13,7 +14,7 @@ const Reviews = () => {
     const fetchReviews = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:7700/api/ratings?page=${page}&limit=10`);
+        const response = await axios.get(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.RATINGS}?page=${page}&limit=10`);
         const newReviews = response.data.ratings;
         if (newReviews.length === 0) {
           setHasMore(false);

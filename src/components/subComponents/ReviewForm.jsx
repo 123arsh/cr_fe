@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import axios from 'axios';
-
-const API_URL = 'http://localhost:7700';
+import { API_CONFIG } from '../../config/api';
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -60,13 +59,13 @@ const ReviewForm = () => {
     try {
       // Test server connection first
       try {
-        await axios.get(`${API_URL}/api/ratings/health`);
+        await axios.get(`${API_CONFIG.BASE_URL}/api/ratings/health`);
       } catch (error) {
         throw new Error('Server is not responding. Please try again later.');
       }
 
       // Submit the review
-      const response = await axios.post(`${API_URL}/api/ratings`, formData, {
+      const response = await axios.post(`${API_CONFIG.BASE_URL}/api/ratings`, formData, {
         headers: {
           'Content-Type': 'application/json'
         }

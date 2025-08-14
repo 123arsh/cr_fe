@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_CONFIG } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const response = await axios.get('http://localhost:7700/check-auth', {
+              const response = await axios.get(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CHECK_AUTH}`, {
         withCredentials: true
       });
       if (response.data.user) {

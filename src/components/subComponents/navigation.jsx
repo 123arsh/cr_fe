@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Search } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_CONFIG } from '../../config/api';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Navigation = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get('http://localhost:7700/check-auth', {
+        const response = await axios.get(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CHECK_AUTH}`, {
           withCredentials: true
         });
         if (response.data.user) {
@@ -44,7 +45,7 @@ const Navigation = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:7700/logout', {}, {
+      await axios.post(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.LOGOUT}`, {}, {
         withCredentials: true
       });
       navigate('/signup');

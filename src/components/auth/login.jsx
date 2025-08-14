@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FaCar, FaShieldAlt, FaUserCheck, FaCreditCard } from 'react-icons/fa';
 import { getErrorDetails } from '../../utils/errorHandler';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_CONFIG } from '../../config/api';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:7700/login', 
+            const response = await axios.post(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.LOGIN}`, 
                 {
                     email,
                     password

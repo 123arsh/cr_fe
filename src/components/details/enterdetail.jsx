@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Upload, CheckCircle2, AlertCircle } from 'lucide-react'
 import axios from 'axios';
+import { API_CONFIG } from '../../config/api';
 
 const Enterdetail = () => {
   const location = useLocation();
@@ -32,7 +33,7 @@ const Enterdetail = () => {
   // Fetch car info if carId is present
   useEffect(() => {
     if (carId) {
-      axios.get(`http://localhost:7700/car/${carId}`)
+      axios.get(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CAR_DETAIL(carId)}`)
         .then(res => setCar(res.data.car))
         .catch(() => setCar(null));
     }
@@ -41,7 +42,7 @@ const Enterdetail = () => {
   // Fetch latest verification status after submitSuccess
   useEffect(() => {
     if (submitSuccess && formData.email) {
-      axios.get('http://localhost:7700/detail/detail')
+      axios.get(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DETAIL_LIST}`)
         .then(res => {
           const all = res.data.detail;
           const userDetail = all.find(d => d.email === formData.email);
@@ -121,7 +122,7 @@ const Enterdetail = () => {
     });
     if (carId) data.append('carId', carId);
     try {
-      await axios.post('http://localhost:7700/api/buycar', data, {
+      await axios.post(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.BUY_CAR}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setSubmitSuccess(true);
@@ -139,7 +140,7 @@ const Enterdetail = () => {
           <p className='mt-2 text-center text-gray-600'>Please provide your information to proceed with the car rental</p>
           {car && (
             <div className='mt-6 flex flex-col md:flex-row items-center gap-6 justify-center bg-blue-50 rounded-xl p-4'>
-              <img src={`http://localhost:7700${car.image}`} alt={car.name} className='w-32 h-20 object-contain rounded-lg shadow' />
+              <img src={API_CONFIG.ENDPOINTS.CAR_IMAGE(car.image)} alt={car.name} className='w-32 h-20 object-contain rounded-lg shadow' />
               <div>
                 <h3 className='text-xl font-semibold text-blue-900'>{car.name}</h3>
                 <p className='text-gray-700'>Type: {car.catagory}</p>

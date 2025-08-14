@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCar, FaCalendarAlt, FaInfoCircle } from 'react-icons/fa';
+import { API_CONFIG } from '../../config/api';
 
 const MyRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -14,7 +15,7 @@ const MyRequests = () => {
   useEffect(() => {
     fetchRequests();
     // Fetch all cars
-    fetch('http://localhost:7700/car/list')
+    fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CAR_LIST}`)
       .then(res => res.json())
       .then(data => setCars(data.carsData || []));
   }, []);
@@ -28,7 +29,7 @@ const MyRequests = () => {
 
   const fetchRequests = () => {
     setLoading(true);
-    fetch('http://localhost:7700/detail/detail', { credentials: 'include' })
+    fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DETAIL_LIST}`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setRequests(data.detail || []);
@@ -61,7 +62,7 @@ const MyRequests = () => {
     setIsDeleting(true);
     try {
       const deletePromises = selectedRequests.map(id => 
-        fetch(`http://localhost:7700/detail/${id}`, {
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DETAIL_BY_ID(id)}`, {
           method: 'DELETE',
           credentials: 'include'
         })
@@ -82,7 +83,7 @@ const MyRequests = () => {
     setIsDeleting(true);
     try {
       const deletePromises = requests.map(req => 
-        fetch(`http://localhost:7700/detail/${req._id}`, {
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DETAIL_BY_ID(req._id)}`, {
           method: 'DELETE',
           credentials: 'include'
         })
@@ -178,7 +179,7 @@ const MyRequests = () => {
                     <div className="flex items-center gap-4">
                       <div className="relative w-24 h-24 bg-white rounded-lg shadow-md overflow-hidden group">
                         <img 
-                          src={`http://localhost:7700${car.image}`} 
+                          src={API_CONFIG.ENDPOINTS.CAR_IMAGE(car.image)} 
                           alt={car.name} 
                           className="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-300" 
                         />
@@ -232,19 +233,19 @@ const MyRequests = () => {
                   <div className="flex flex-col items-center">
                     <span className="font-medium text-xs mb-1">Aadhar</span>
                     <img 
-                      src={`http://localhost:7700/docImages/${req.adharCard}`} 
+                      src={API_CONFIG.ENDPOINTS.DOC_IMAGE(req.adharCard)} 
                       alt='Aadhar' 
                       className='w-24 h-16 object-contain border-2 border-blue-200 rounded-lg shadow cursor-pointer hover:border-blue-400 transition-colors' 
-                      onClick={() => setPreviewImg(`http://localhost:7700/docImages/${req.adharCard}`)} 
+                      onClick={() => setPreviewImg(API_CONFIG.ENDPOINTS.DOC_IMAGE(req.adharCard))} 
                     />
                   </div>
                   <div className="flex flex-col items-center">
                     <span className="font-medium text-xs mb-1">License</span>
                     <img 
-                      src={`http://localhost:7700/docImages/${req.drivingLicence}`} 
+                      src={API_CONFIG.ENDPOINTS.DOC_IMAGE(req.drivingLicence)} 
                       alt='License' 
                       className='w-24 h-16 object-contain border-2 border-green-200 rounded-lg shadow cursor-pointer hover:border-green-400 transition-colors' 
-                      onClick={() => setPreviewImg(`http://localhost:7700/docImages/${req.drivingLicence}`)} 
+                      onClick={() => setPreviewImg(API_CONFIG.ENDPOINTS.DOC_IMAGE(req.drivingLicence))} 
                     />
                   </div>
                 </div>

@@ -16,6 +16,7 @@ import Navigation from './components/subComponents/navigation';
 import Footer from './components/subComponents/Footer';
 import Reviews from './components/subComponents/Reviews';
 import MyRequests from './components/navigation/MyRequests';
+import DebugPanel from './components/DebugPanel';
 
 function AppContent() {
   const location = useLocation();
@@ -90,6 +91,9 @@ function AppContent() {
         <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>
       {!isAuthPage && <Footer />}
+      
+      {/* Debug Panel - only in development */}
+      <DebugPanel />
       
       {/* Toast Container */}
       <ToastContainer

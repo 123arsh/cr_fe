@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
 import { API_CONFIG } from '../config/api';
+import { testApiConnection } from '../utils/apiTest';
 
 const AuthContext = createContext();
 
@@ -15,17 +15,39 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-              const response = await axios.get(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CHECK_AUTH}`, {
-        withCredentials: true
-      });
+      console.log('Checking authentication status...');
+      
+      // Run API test in development mode
+      if (import.meta.env.DEV) {
+        await testApiConnection();
+      }
+      
+      const response = await API_CONFIG.CLIENT.get(API_CONFIG.ENDPOINTS.CHECK_AUTH);
+      
+      console.log('Auth check response:', response.data);
+      
       if (response.data.user) {
         setUser(response.data.user);
         setIsAuthenticated(true);
+        console.log('User authenticated:', response.data.user);
       } else {
         setUser(null);
         setIsAuthenticated(false);
+        console.log('No user data in response');
       }
     } catch (error) {
+      console.log('Auth check failed:', error.response?.status, error.response?.data);
+      
+      // Handle specific error cases
+      if (error.response?.status === 401) {
+        console.log('User not authenticated (401) - this is normal for new users');
+        // This is expected for users who haven't logged in yet
+      } else if (error.response?.status === 403) {
+        console.log('Access forbidden (403)');
+      } else if (!error.response) {
+        console.log('Network error or server not responding');
+      }
+      
       setUser(null);
       setIsAuthenticated(false);
     } finally {
@@ -36,11 +58,13 @@ export const AuthProvider = ({ children }) => {
   const login = (userData) => {
     setUser(userData);
     setIsAuthenticated(true);
+    console.log('User logged in:', userData);
   };
 
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
+    console.log('User logged out');
   };
 
   if (isLoading) {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { FaCar, FaShieldAlt, FaUserCheck, FaCreditCard } from 'react-icons/fa';
 import { getErrorDetails } from '../../utils/errorHandler';
 import { useAuth } from '../../contexts/AuthContext';
@@ -19,16 +18,10 @@ const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await axios.post(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.LOGIN}`, 
-                {
-                    email,
-                    password
-                },
-                {
-                    withCredentials: true,
-                    timeout: 10000 // 10 second timeout
-                }
-            );
+            const response = await API_CONFIG.CLIENT.post(API_CONFIG.ENDPOINTS.LOGIN, {
+                email,
+                password
+            });
             
             if(response.status === 200 || response.status === 201){
                 // Set user data in AuthContext

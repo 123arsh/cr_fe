@@ -4,6 +4,14 @@
  * @returns {Object} Object containing error message and type
  */
 export const getErrorDetails = (error) => {
+    // CORS error (cross-origin request blocked)
+    if (error.message && error.message.includes('CORS')) {
+        return {
+            message: 'Cross-origin request blocked. Please contact support.',
+            type: 'cors'
+        };
+    }
+
     // Network error (no response from server)
     if (error.message === 'Network Error') {
         return {

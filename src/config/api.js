@@ -1,5 +1,5 @@
 // API Configuration for Car Rental App
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cr-be-1.onrender.com';
+const API_BASE_URL = (import.meta.env && import.meta.env.VITE_API_URL) || 'https://cr-be-1.onrender.com';
 
 export const API_CONFIG = {
   BASE_URL: API_BASE_URL,

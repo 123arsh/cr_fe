@@ -36,10 +36,16 @@ export const getErrorDetails = (error) => {
                 type: 'validation'
             };
         case 401:
-            return {
-                message: 'Session expired. Please login again.',
-                type: 'auth'
-            };
+            {
+                const url = error.config?.url || '';
+                const isLogin = url.includes('/login');
+                return {
+                    message: isLogin
+                        ? (error.response.data?.message || 'Invalid email or password.')
+                        : 'Session expired. Please login again.',
+                    type: 'auth'
+                };
+            }
         case 403:
             return {
                 message: 'You do not have permission to perform this action.',
